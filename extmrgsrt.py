@@ -58,7 +58,10 @@ def merge_file():
     chunk_files = glob.glob('/home/xenial/Desktop/extnalmergesort/External_Merge_Sort/*.txt')
     
     # Open temp files and store file handlers in list
-    
+    pointers=[]
+    for i,file in enumerate(chunk_files):
+        handle = open(file,"r")
+        pointers.append((i,handle))
 
 split_file(large_filename)
 merge_file()
