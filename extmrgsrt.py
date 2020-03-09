@@ -3,11 +3,21 @@ import glob
 import subprocess
 import heapq
 
-def sorting(pointers):
-    out = []
-    heap = []
+# funtion to merge temp files.
+# uses heap to perform k-way merge.
+# result will be sorted data
+def merge_file():
+    out = []                    
+    heap = []                   
     mem = [[],[],[],[],[]]
 
+    #create array of file handlers
+    pointers = [0]*5
+    for i in range(5):
+        file = '{}.txt'.format(i)
+        f = open(file,"r")
+        pointers[i] = (i,f)
+ 
     # read first 100 lines of all file in mem
     for i in range(5):
         for j in range(100):
@@ -82,8 +92,11 @@ def sorting(pointers):
         # push next data into heap and append result to output
         val,ptr = heapq.heappop(heap)
         out.append(val.strip('\n'))
+
+        # push next data into the heap
         if mem[ptr]:
             heapq.heappush(heap,(mem[ptr].pop(0),ptr))
+        
         # if output reach 100 lines write into file and flush output
         if len(out) == 100:
             with open("sorted","a") as file:
@@ -133,20 +146,12 @@ def split_file(file_name):
         count+=1
         data=[]
 
-# Merge function. 
-# This function will do a k-way merge on temp file. 
-# result will be a bigfile with sorted data.
-def merge_file():
-    
-    # Open chunk files and store pointers
-    pointers = [0]*5
-    for i in range(5):
-        file = '{}.txt'.format(i)
-        f = open(file,"r")
-        pointers[i] = (i,f)
-    
-    sorting(pointers)
 
-large_filename = "large"
-split_file(large_filename)
-merge_file()
+# program starts here
+if __name__ == "__main__":
+    
+    large_filename = "large"
+    # calling split funtion to make temp sorted files
+    split_file(large_filename)
+    # funtion to merge temp files
+    merge_file()
