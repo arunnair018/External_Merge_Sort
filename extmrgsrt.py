@@ -134,7 +134,7 @@ def split_file(file_name):
 
         # Reading lines from file into list and sort the list
         data = [next(large_file_handler) for x in range(chunk_size)]
-        data.sort(key = lambda x: x.lower())    
+        data.sort()    
         
         # Open temp file and write lines into temp file
         small_filename = "{}.txt".format(count)
